@@ -1,24 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import Header from './components/Header'
+import Body from './components/Body'
+import { Outlet } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import UserContext from './utils/UserContext';
+import { Provider } from 'react-redux';
+import appStore from './utils/appStore';
+
 
 function App() {
+
+  const [userName, setUserName] = useState()
+
+  // authentication
+  useEffect(() => {
+    // Make an API call and send username and password
+    const data = {
+      name: 'Naveed Wani'
+    }
+    setUserName(data.name)
+  }, [])
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    //Default
+    <Provider store = {appStore}>
+    <UserContext.Provider value={{loggedInUser: userName, setUserName}}>
+       <div className="App">
+      <UserContext.Provider value={{loggedInUser: 'Elon Musk'}}>
+       {/* Elon Musk */}
+      <Header />
+      {/* if path = /*/}
+        {/* <Body /> */}
+        </UserContext.Provider>
+        <Outlet />
+     
+      </div>
+      </UserContext.Provider>
+    </Provider>
+     
   );
 }
 
